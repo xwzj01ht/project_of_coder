@@ -133,6 +133,7 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$PRG"`
 
+# 设置tomcat根目录：CATALINA_HOME
 # Only set CATALINA_HOME if not already set
 [ -z "$CATALINA_HOME" ] && CATALINA_HOME=`cd "$PRGDIR/.." >/dev/null; pwd`
 
@@ -143,6 +144,7 @@ PRGDIR=`dirname "$PRG"`
 # but allow them to be specified in setenv.sh, in rare case when it is needed.
 CLASSPATH=
 
+# 该版本没有setenv.sh脚本
 if [ -r "$CATALINA_BASE/bin/setenv.sh" ]; then
   . "$CATALINA_BASE/bin/setenv.sh"
 elif [ -r "$CATALINA_HOME/bin/setenv.sh" ]; then
@@ -178,6 +180,8 @@ if $os400; then
   # this will not work if the user belongs in secondary groups
   . "$CATALINA_HOME"/bin/setclasspath.sh
 else
+
+  # 执行脚本setclasspath.sh
   if [ -r "$CATALINA_HOME"/bin/setclasspath.sh ]; then
     . "$CATALINA_HOME"/bin/setclasspath.sh
   else
