@@ -20,6 +20,10 @@
 # -----------------------------------------------------------------------------
 
 # Better OS/400 detection: see Bugzilla 31132
+
+# 增强程序的可移植性
+# OS/400（QShell）是IBM公司为其AS/400以及AS/400e系列商业计算机开发的操作系统，支持java程序
+
 os400=false
 case "`uname`" in
 OS400*) os400=true;;
@@ -27,6 +31,8 @@ esac
 
 # resolve links - $0 may be a softlink
 PRG="$0"
+
+# 循环解析软链接，直至找到实际文件为止
 
 while [ -h "$PRG" ] ; do
   ls=`ls -ld "$PRG"`
@@ -49,6 +55,9 @@ if $os400; then
   # this will not work if the user belongs in secondary groups
   eval
 else
+
+  # 学习点一：程序异常退出时一定要打印可追溯的提示信息（日志）
+
   if [ ! -x "$PRGDIR"/"$EXECUTABLE" ]; then
     echo "Cannot find $PRGDIR/$EXECUTABLE"
     echo "The file is absent or does not have execute permission"
