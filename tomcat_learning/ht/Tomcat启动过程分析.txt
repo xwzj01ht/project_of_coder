@@ -1,0 +1,62 @@
+源码阅读要把握两个方向：
+    1.纵向的深度阅读(注重实现原理)；
+    2.横向的广度阅读(学习优秀代码、发散思维、掌握关联技术)
+
+映射到本次课题：
+    1.纵向：
+        1.深入研究static关键字；
+        2.深入研究类加载、销毁机制；
+        3.java的应用程序(main函数)，对于JVM而言算什么？一个线程？？？
+        4.Tomcat类加载机制；
+        5.java中的反射机制；
+    2.横向：
+        1.优雅启、停Tomcat的最佳实践；
+        2.学习如何在代码中更好的做好备注；
+        3.学习如何更好地设计方法；
+
+一、给Bootstrap类变量daemon(类成员变量)赋值
+知识点：
+    1.static修饰的成员变量为类变量
+    2.类变量的作用域：与类的生命周期相同
+    3.类变量有两种访问方式：
+        1.类.类变量
+        2.实例.类变量
+        注意：实例共享类变量，其中一个实例修改类变量后，其他实例类变量的值也发生变化
+
+1.判断类变量daemon是否为null
+    由此可见在Bootstrap类的生命周期中始终只会拥有一个实例
+    switch-1：是
+        创建Bootstrap实例、初始化实例、赋值类变量daemon
+    switch-2：否
+        Thread.currentThread().setContextClassLoader(daemon.catalinaLoader);
+        思考：java的应用程序(main函数)，对于JVM而言算什么？一个线程？？？
+
+2.创建并初始化Bootstrap实例：bootstrap.init()
+    1.设置系统配置信息catalina.home、catalina.base
+        注意：user.dir为用户当前工作目录；System.getProperty("配置名")获取系统配置信息
+
+    2.initClassLoaders()：catalinaLoader = createClassLoader("server", commonLoader)
+        
+        1.createClassLoader：赋值成员变量catalinaLoader
+             1.获取catalina.properties中的配置信息
+             2.工厂模式创建类加载器
+
+    3.给当前线程设置catalinaLoader类加载器：Thread.currentThread().setContextClassLoader(catalinaLoader)
+        
+    4.加载Catalina类：Class<?> startupClass = catalinaLoader.loadClass ("org.apache.catalina.startup.Catalina")
+
+    5.创建Catalina实例：Object startupInstance = startupClass.newInstance()
+
+    6.赋值成员变量：catalinaDaemon = startupInstance
+
+3.赋值类变量：daemon = bootstrap
+
+4.进入if-else分支执行“start”
+
+5.daemon.setAwait(true)
+
+6.daemon.load(args)
+
+7.daemon.start()
+
+

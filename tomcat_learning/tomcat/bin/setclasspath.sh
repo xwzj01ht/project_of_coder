@@ -22,6 +22,8 @@
 # -----------------------------------------------------------------------------
 
 # Make sure prerequisite environment variables are set
+
+# 设置变量：JAVA_HOME、JRE_HOME
 if [ -z "$JAVA_HOME" -a -z "$JRE_HOME" ]; then
   if $darwin; then
     # Bugzilla 54390

@@ -44,6 +44,8 @@ import org.apache.juli.logging.LogFactory;
  * @author Craig R. McClanahan
  * @author Remy Maucherat
  */
+
+// 用final修饰，表示这个类不能被继承，一般来说工具类我们往往会设计成一个final类
 public final class Bootstrap {
 
     private static final Log log = LogFactory.getLog(Bootstrap.class);
