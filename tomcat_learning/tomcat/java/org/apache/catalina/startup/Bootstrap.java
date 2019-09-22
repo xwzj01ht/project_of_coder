@@ -220,6 +220,8 @@ public final class Bootstrap {
         paramTypes[0] = Class.forName("java.lang.ClassLoader");
         Object paramValues[] = new Object[1];
         paramValues[0] = sharedLoader;
+
+        // 不理解此处为何将父类加载器设置为sharedLoader，难道根据设计图不应该是commonLoader吗？？？
         Method method =
             startupInstance.getClass().getMethod(methodName, paramTypes);
         method.invoke(startupInstance, paramValues);
